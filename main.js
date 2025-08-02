@@ -1,54 +1,68 @@
 function capitalize (input){
-    return input.charAt(0).toUppercase() + input.slice(1);
+    return input.charAt(0).toUpperCase() + input.slice(1);
 }
 
 function reverseString(input){
     let reverse ="";
-    for(let i=input.length-1; i<=0;i--){
-        reverse = reverse + input.charAt(i);
+    for(let i=input.length-1; i>=0;i--){
+        reverse += input.charAt(i);
     }
     return reverse;
 }
 
-class calculator{
-    constructor(a,b){
-        this.num1 = a;
-        this.num2 = b;
+class Calculators{
+    static add(a, b) {
+        return a + b;
     }
-    add(){
-        return a+b;
+    static subtract(a, b) {
+        return a - b;
     }
-    subtract(){
-        return a-b;
+    static multiply(a, b) {
+        return a * b;
     }
-    multiply(){
-        return a*b;
-    }
-    divide(){
-        return (a/b).toFixed(2);
+    static divide(a, b) {
+        if (b === 0) throw new Error("Cannot divide by zero");
+        return Number((a / b).toFixed(2)); // returns a number with 2 decimal places
     }
 }
 
 function caesarCipher(input, shift){
     let output = '';
     for(let i=0;i<input.length;i++){
-        let change = (input.charCodeAt(i))+shift;
-        if(change >122){
-            change = (change%122) +96;
+        const char = input[i];
+        const code = input.charCodeAt(i);
+          // Handle lowercase letters (a–z)
+        if (code >= 97 && code <= 122) {
+            let shifted = ((code - 97 + shift) % 26 + 26) % 26;
+            output += String.fromCharCode(97 + shifted);
         }
-        else if(change >90){
-            change = (change%90)+64;
+        // Handle uppercase letters (A–Z)
+        else if (code >= 65 && code <= 90) {
+            let shifted = ((code - 65 + shift) % 26 + 26) % 26;
+            output += String.fromCharCode(65 + shifted);
         }
-        output = output + String.fromCharCode(change);
+        // Leave non-letters unchanged
+        else {
+            output += char;
+        }
     }
     return output;
 }
 
 function analyzeArray(array){
+    const sum = array.reduce((a,b) => a+b,0);
     return {
-        average: Math.average(...array),
+        average: sum/array.length,
         min: Math.min(...array),
-        Max: (Math.max(...array)),
-        Length: (array.legnth)
+        max: Math.max(...array),
+        length: array.length
     }
+}
+
+module.exports = {
+    analyzeArray,
+    caesarCipher,
+    Calculators,
+    capitalize,
+    reverseString
 }
